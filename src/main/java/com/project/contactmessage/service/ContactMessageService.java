@@ -5,11 +5,11 @@ import com.project.contactmessage.dto.ContactMessageResponse;
 import com.project.contactmessage.entity.ContactMessage;
 import com.project.contactmessage.mapper.ContactMessageMapper;
 import com.project.contactmessage.repository.ContactMessageRepository;
+import com.project.exception.ResourceNotFoundException;
 import com.project.payload.response.business.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +35,18 @@ public class ContactMessageService {
                 .httpStatus(HttpStatus.CREATED)
                 .object(createContactMessage.contactMessageToResponse(savedContactMessage))
                 .build();
+        /**
+         * Bu sınıftaneler yaptık
+         * 1->ContactMessage contactMessage = createContactMessage.requestToContactMessage(contactMessageRequest); methodu ile
+         * dto-pojo dönüşümü sağladık
+         * 2->ContactMessage savedContactMessage = contactMessageRepository.save(contactMessage); repo ya gönderdik
+         * 3->return ResponseMessage.<ContactMessageResponse>builder()
+         *                 .message("Contact Message Created Successfully ")
+         *                 .httpStatus(HttpStatus.CREATED)
+         *                 .object(createContactMessage.contactMessageToResponse(savedContactMessage))
+         *                 .build()
+         * gelen cevap pojo olduğu için DTO ya dönüştürüp geri cevap verdik.
+         */
     }
 
     public Page<ContactMessageResponse> getAllByPage(Pageable pageRequest) {
@@ -121,7 +134,7 @@ public class ContactMessageService {
         if (contactMessageList.isEmpty()) {
             return ResponseMessage.<List<ContactMessageResponse>>builder()
                     .message("No contact messages found between the provided dates")
-                    .httpStatus(HttpStatus.OK)
+                    .httpStatus(HttpStatus.NOT_FOUND)
                     .build();
         }
         List<ContactMessageResponse> responseList = contactMessageList.stream()
@@ -134,6 +147,26 @@ public class ContactMessageService {
                 .build();
     }
 
+
+    public void deleteById(Long id) {
+        if (!contactMessageRepository.existsById(id)){
+            throw new ResourceNotFoundException("Contact message with ID " + id + " not found.");
+        }
+        contactMessageRepository.deleteById(id);
+    }
+
+    public ContactMessageResponse findById(Long id) {
+        ContactMessage contactMessage = contactMessageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Contact message with ID " + id + " not found."));
+        return createContactMessage.contactMessageToResponse(contactMessage);
+    }
+
+  /*  public ContactMessageResponse findById(Long id) {
+     if (!contactMessageRepository.existsById(id)){
+         throw new ResourceNotFoundException("Contact message with ID " + id + " not found.");
+     }
+     return contactMessageRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Contact message with ID " + id + " not found."));
+        //.
+    }*/
 }
 
 

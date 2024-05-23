@@ -2,7 +2,7 @@ package com.project.contactmessage.controller;
 
 import com.project.contactmessage.dto.ContactMessageRequest;
 import com.project.contactmessage.dto.ContactMessageResponse;
-import com.project.contactmessage.dto.PagedResponse;
+import com.project.contactmessage.entity.ContactMessage;
 import com.project.contactmessage.service.ContactMessageService;
 import com.project.payload.response.business.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -149,14 +148,58 @@ public ResponseEntity<PagedResponse<ContactMessageResponse>> getAllByPage(
     }
 
     // Not:****************************************searchByTimeBetween ***************************************
+    /**
+     *http://localhost:8080/contactMessage/searchByTimeBetween
+     */
 
+   // @GetMapping("/")
     // Not: *********************************** deleteByIdParam ***************************************
+    /**
+     * http://localhost:8080/contactMessage/deleteByIdParam
+     */
+    @DeleteMapping("/deleteByIdParam")
+    public ResponseMessage<String> deleteByIdParam(@RequestParam("id") Long id){
+        contactMessageService.deleteById(id);
+        return ResponseMessage.<String>builder()
+                .message("Contact message deleted successfully")
+                .httpStatus(HttpStatus.OK)
+                .object("Contact message with ID " + id + " deleted.")
+                .build();
+    }
 
     // Not: ***************************************** deleteById ***************************************
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseMessage<String>deleteById(@PathVariable("id")Long id){
+        contactMessageService.deleteById(id);
+        return ResponseMessage.<String>builder()
+                .message("Contact message deleted successfully")
+                .httpStatus(HttpStatus.OK)
+                .object("Contact message with ID " + id + " deleted")
+                .build();
+    }
 
     // Not: *********************************** getByIdWithParam ***************************************
 
-    // Not: ************************************ getByIdWithPath ***************************************
+    @GetMapping("/getByIdWithParam")
+    public ResponseMessage<ContactMessageResponse>getMessagebyIdWithParam(@RequestParam("/{id}") Long id){
+        ContactMessageResponse response  = contactMessageService.findById(id);
+        return ResponseMessage.<ContactMessageResponse>builder()
+              .message("Contact message retrieved successfully")
+              .httpStatus(HttpStatus.OK)
+              .object(response)
+              .build();
+    }
 
+    // Not: ************************************ getByIdWithPath ***************************************
+@GetMapping("/getByIdWithPath/{id}")
+    public ResponseMessage<ContactMessageResponse> getByIdWithPAth(@PathVariable("id")Long id)
+{
+    ContactMessageResponse byIdResponse = contactMessageService.findById(id);
+    return ResponseMessage.<ContactMessageResponse>builder()
+            .message("Contact message retrieved successfully")
+            .httpStatus(HttpStatus.OK)
+            .object(byIdResponse)
+            .build();
+}
 
 }
