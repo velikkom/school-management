@@ -36,7 +36,7 @@ public class ContactMessageController {
      * Not: ******************************************** getAllByPage ***************************************
      * http://localhost:8080/contactMessage/getAll
      */
-/*@GetMapping("/getAllByPage")
+    /*@GetMapping("/getAllByPage")
 public ResponseEntity<PagedResponse<ContactMessageResponse>> getAllByPage(
         @RequestParam("page") int page,
         @RequestParam("size") int size,
@@ -46,7 +46,7 @@ public ResponseEntity<PagedResponse<ContactMessageResponse>> getAllByPage(
     PagedResponse<ContactMessageResponse> pagedResponse = contactMessageService.getAllByPage(pageRequest);
     return ResponseEntity.ok(pagedResponse);
 }*/
-  /*  @GetMapping("/getAllByPage")
+     /*  @GetMapping("/getAllByPage")
     public ResponseMessage<Page<ContactMessageResponse>> getAllByPage(
             @RequestParam("page") int page,
             @RequestParam("size") int size,
