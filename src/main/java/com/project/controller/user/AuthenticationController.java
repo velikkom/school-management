@@ -1,12 +1,45 @@
 package com.project.controller.user;
 
+import com.project.entity.concretes.user.User;
+import com.project.payload.authentication.LoginRequest;
+import com.project.payload.response.authentication.AuthResponse;
+import com.project.service.user.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
+
+    private final AuthenticationService authenticationService;
+
+    /**
+     * http://localhost:8080/auth/login
+     * postmapping
+     */
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse>  authenticateUser(@RequestBody @Valid LoginRequest loginRequest)
+    {
+    //    return authenticationService.authenticateUser(loginRequest);
+        return null;
+    }
+
+    /**
+     * Not: ODEV : updatePassword() --> Controller ve Service
+     * old password new password
+     * old password plain text but in db it is hashed int that reason
+     *
+     * login service kısmı yazılacak
+     *
+     */
+
+
+
 
 /*    private final AuthenticationService authenticationService;
 
