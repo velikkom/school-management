@@ -2,6 +2,9 @@ package com.project.payload.mappers;
 
 import com.project.entity.concretes.user.User;
 import com.project.payload.request.abstracts.BaseUserRequest;
+import com.project.payload.request.user.UserRequest;
+import com.project.payload.response.user.StudentResponse;
+import com.project.payload.response.user.TeacherResponse;
 import com.project.payload.response.user.UserResponse;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +46,7 @@ public class UserMapper
 
     }
 
-    /*public StudentResponse mapUserToStudentResponse(User student){
+    public StudentResponse mapUserToStudentResponse(User student){
 
         return StudentResponse.builder()
                 .userId(student.getId())
@@ -94,7 +97,7 @@ public class UserMapper
                 .gender(userRequest.getGender())
                 .email(userRequest.getEmail())
                 .build() ;
-    }*/
+    }
 
 
 }
