@@ -75,7 +75,7 @@ public class AuthenticationService {
         return ResponseEntity.ok(authResponse.build());
 
     }
-//TODO 23.51
+
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest, HttpServletRequest request)
     {
         String userName = (String) request.getAttribute("username");
