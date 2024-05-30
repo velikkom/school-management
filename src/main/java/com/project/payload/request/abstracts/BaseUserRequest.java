@@ -21,4 +21,5 @@ public  abstract class BaseUserRequest extends AbstractUserRequest {
     private String password;
 
     private Boolean builtIn = false;
+
 }

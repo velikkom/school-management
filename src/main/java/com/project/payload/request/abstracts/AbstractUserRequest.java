@@ -10,12 +10,15 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-@SuperBuilder // Odev : bu anotazyon oncesinde , @SuperBuilder in cozdugu sorun nasil cozuluyordu.
+@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AbstractUserRequest
 {
+    /**
+     * // Odev : bu anotazyon oncesinde , @SuperBuilder in cozdugu sorun nasil cozuluyordu.
+     */
 
     @NotNull(message = "Please enter your username")
     @Size(min = 4, max = 16,message = "Your username should be at least 4 chars")
