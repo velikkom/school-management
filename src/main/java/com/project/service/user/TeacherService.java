@@ -82,6 +82,57 @@ public class TeacherService
                 .map(userMapper::mapUserToUserResponse)
                 .collect(Collectors.toList());
     }
+
+    public ResponseMessage<TeacherResponse> updateTeacherById(Long id, TeacherRequest teacherRequest)
+    {
+        User existingTeacher = methodHelper.isUserExist(id);
+        uniquePropertyValidator.checkUniqueProperties(existingTeacher,teacherRequest);
+
+        User updatedTeacher = userMapper.mapTeacherRequestToUser(teacherRequest);
+        updatedTeacher.setId(id);
+        updatedTeacher.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
+        updatedTeacher.setPassword(passwordEncoder.encode(teacherRequest.getPassword()));
+        updatedTeacher.setIsAdvisor(teacherRequest.getIsAdvisorTeacher());
+        User savedTeacher = userRepository.save(updatedTeacher);
+
+
+        return ResponseMessage.<TeacherResponse>
+                builder()
+                .message(SuccessMessages.TEACHER_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .object(userMapper.mapUserToTeacherResponse(savedTeacher))
+                .build();
+    }
+
+    public ResponseMessage<String> deleteAdvisorTeacherById(Long id)
+    {
+        User teacher = methodHelper.isUserExist(id);
+        methodHelper.checkadvisor(teacher);
+
+        userRepository.deleteById(id);
+
+        return ResponseMessage.<String>builder()
+                .message(SuccessMessages.TEACHER_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .object(SuccessMessages.TEACHER_DELETE)
+                .build();
+    }
+
+    public ResponseMessage<TeacherResponse> saveAdvisorTeacherByTeacherId(Long id)
+    {
+        User teacher = methodHelper.isUserExist(id);
+
+        teacher.setIsAdvisor(Boolean.TRUE);
+        User updatedTeacher = userRepository.save(teacher);
+
+        return ResponseMessage.<TeacherResponse>builder()
+                .message(SuccessMessages.TEACHER_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .object(userMapper.mapUserToTeacherResponse(updatedTeacher))
+                .build();
+    }
+
+
     //to do lesson programme will be added
 
 

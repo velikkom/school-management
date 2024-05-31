@@ -31,12 +31,32 @@ public class TeacherController
     }
 
     // Not:  updateTeacherById() ***************************************************
-
+    //http://localhost:8080/teacher/updateTeacherById
+    @PutMapping("/updateTeacherById")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<ResponseMessage<TeacherResponse>>  updateTeacherById(@RequestParam Long id,@RequestBody @Valid TeacherRequest teacherRequest)
+    {
+        return ResponseEntity.ok(teacherService.updateTeacherById (id,teacherRequest));
+    }
 
     // Not: SaveAdvisorTeacherByTeacherId() ****************************************
+    //http://localhost:8080/teacher/SaveAdvisorTeacherByTeacherId
+    @PostMapping("/SaveAdvisorTeacherByTeacherId")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<ResponseMessage<TeacherResponse>> saveAdvisorTeacherByTeacherId(@RequestParam Long id) {
+        return ResponseEntity.ok(teacherService.saveAdvisorTeacherByTeacherId(id));
+    }
+
 
 
     // Not :  deleteAdvisorTeacherById() *******************************************
+    //http://localhost:8080/teacher/deleteAdvisorTeacherById
+    @DeleteMapping("/deleteAdvisorTeacherById")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<ResponseMessage<String>> deleteAdvisorTeacherById(@RequestParam Long id)
+    {
+        return ResponseEntity.ok(teacherService.deleteAdvisorTeacherById(id));
+    }
 
     // Not: GetAllStudentByAdvisorUserName()
     // // http://localhost:8080/teacher/getAllAdvisorTeacher
