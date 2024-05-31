@@ -196,4 +196,9 @@ public class UserService
                 .map(userMapper::mapUserToUserResponse)
                 .collect(Collectors.toList()) ;
     }
+
+    public long countAllAdmins()
+    {
+        return userRepository.countAdmin(RoleType.ADMIN);
+    }
 }

@@ -15,4 +15,7 @@ public class ErrorMessages {
     public static final String ROLE_NOT_FOUND = "There is no role like that , check the database" ;
 
     public static final String NOT_FOUND_USER_MESSAGE = "Error: User not found with id %s";
+
+    public static final String NOT_FOUND_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s not found";
+
 }
