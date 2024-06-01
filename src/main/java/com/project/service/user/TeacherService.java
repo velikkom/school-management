@@ -2,7 +2,9 @@ package com.project.service.user;
 
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.RoleType;
+import com.project.exception.ConflictException;
 import com.project.payload.mappers.UserMapper;
+import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.user.TeacherRequest;
 import com.project.payload.response.business.ResponseMessage;
@@ -66,7 +68,7 @@ public class TeacherService
     public List<StudentResponse> getAllStudentByAdvisorUsername(String username)
     {
         User teacher = methodHelper.isUserExistByUsername(username);
-        methodHelper.checkadvisor(teacher);
+        methodHelper.checkAdvisor(teacher);
 
         return userRepository.findByAdvisorTeacherId(teacher.getId())
                 .stream()
@@ -82,8 +84,35 @@ public class TeacherService
                 .map(userMapper::mapUserToUserResponse)
                 .collect(Collectors.toList());
     }
+    //re customize updateTeacherById
 
-    public ResponseMessage<TeacherResponse> updateTeacherById(Long id, TeacherRequest teacherRequest)
+    public ResponseMessage<TeacherResponse> updateTeacherForManagers(TeacherRequest teacherRequest, Long userId) {
+
+        User user = methodHelper.isUserExist(userId);
+        // !!! Parametrede gelen id bir teacher a ait degilse exception firlatiliyor
+        methodHelper.checkRole(user,RoleType.TEACHER);
+
+        //!!! TODO: LessonProgramlar getiriliyor
+
+        // !!! unique kontrolu
+        uniquePropertyValidator.checkUniqueProperties(user, teacherRequest);
+        // !!! DTO --> POJO
+        User updatedTeacher = userMapper.mapTeacherRequestToUpdatedUser(teacherRequest, userId);
+        // !!! props. that doesn't exist in mappers
+        updatedTeacher.setPassword(passwordEncoder.encode(teacherRequest.getPassword()));
+        // !!! TODO: LessonProgram will be add later on
+        updatedTeacher.setUserRole(userRoleService.getUserRole(RoleType.TEACHER));
+
+        User savedTeacher = userRepository.save(updatedTeacher);
+
+        return ResponseMessage.<TeacherResponse>builder()
+                .object(userMapper.mapUserToTeacherResponse(savedTeacher))
+                .message(SuccessMessages.TEACHER_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+   /* public ResponseMessage<TeacherResponse> updateTeacherById(Long id, TeacherRequest teacherRequest)
     {
         User existingTeacher = methodHelper.isUserExist(id);
         uniquePropertyValidator.checkUniqueProperties(existingTeacher,teacherRequest);
@@ -103,8 +132,33 @@ public class TeacherService
                 .object(userMapper.mapUserToTeacherResponse(savedTeacher))
                 .build();
     }
+*/
 
-    public ResponseMessage<String> deleteAdvisorTeacherById(Long id)
+    public ResponseMessage<UserResponse> deleteAdvisorTeacherById(Long teacherId) {
+        User teacher = methodHelper.isUserExist(teacherId);
+        // !!! id ile gelen user Teacher mi kontrolu
+        methodHelper.checkRole(teacher,RoleType.TEACHER);
+
+        // !!! id ile gelen teacheradvisor mi kontrolu ?
+        methodHelper.checkAdvisor(teacher);
+
+        teacher.setIsAdvisor(Boolean.FALSE);
+        userRepository.save(teacher);
+
+        // !!! silinen advisor Teacherlarin Student lari varsa bu iliskinin de koparilmasi gerekiyor
+        List<User> allStudents = userRepository.findByAdvisorTeacherId(teacherId);
+        if(!allStudents.isEmpty()) {
+            allStudents.forEach(students -> students.setAdvisorTeacherId(null));
+        }
+
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccessMessages.ADVISOR_TEACHER_DELETE)
+                .object(userMapper.mapUserToUserResponse(teacher))
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+    /* public ResponseMessage<String> deleteAdvisorTeacherById(Long id)
     {
         User teacher = methodHelper.isUserExist(id);
         methodHelper.checkadvisor(teacher);
@@ -117,8 +171,31 @@ public class TeacherService
                 .object(SuccessMessages.TEACHER_DELETE)
                 .build();
     }
+*/
+    public ResponseMessage<UserResponse> saveAdvisorTeacher(Long teacherId) {
 
-    public ResponseMessage<TeacherResponse> saveAdvisorTeacherByTeacherId(Long id)
+        // !!! Save de yazdigimiz ya varsa kontrolu
+        User teacher = methodHelper.isUserExist(teacherId);
+        // !!! id ile gelen uer Teacher mi kontrolu
+        methodHelper.checkRole(teacher,RoleType.TEACHER);
+
+        // !!! id ile gelen teacher zaten advisor mi kontrolu ?
+        if(Boolean.TRUE.equals(teacher.getIsAdvisor())) { // condition : teacher.getIsAdvisor()
+            throw new ConflictException(
+                    String.format(ErrorMessages.ALREADY_EXIST_ADVISOR_MESSAGE, teacherId));
+        }
+
+        teacher.setIsAdvisor(Boolean.TRUE);
+        userRepository.save(teacher);
+
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccessMessages.ADVISOR_TEACHER_SAVE)
+                .object(userMapper.mapUserToUserResponse(teacher))
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+   /* public ResponseMessage<TeacherResponse> saveAdvisorTeacherByTeacherId(Long id)
     {
         User teacher = methodHelper.isUserExist(id);
 
@@ -130,7 +207,7 @@ public class TeacherService
                 .httpStatus(HttpStatus.OK)
                 .object(userMapper.mapUserToTeacherResponse(updatedTeacher))
                 .build();
-    }
+    }*/
 
 
     //to do lesson programme will be added

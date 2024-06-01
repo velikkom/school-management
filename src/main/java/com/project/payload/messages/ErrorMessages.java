@@ -1,6 +1,10 @@
 package com.project.payload.messages;
 
+import java.util.Locale;
+
 public class ErrorMessages {
+
+
 
     private ErrorMessages() {
     }
@@ -18,5 +22,7 @@ public class ErrorMessages {
 
     public static final String NOT_FOUND_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s not found";
     public static final String TEACHER_NOT_ADVISOR = "Teacher with id %d is not an advisor.";
+    public static final String NOT_FOUND_USER_WITH_ROLE_MESSAGE = "Error: The role information of the user with id %s is not role: %s" ;
+    public static final String ALREADY_EXIST_ADVISOR_MESSAGE = "Error: Advisor Teacher with id %s is already exist";
 
 }
