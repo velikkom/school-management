@@ -2,9 +2,12 @@ package com.project.service.business;
 
 import com.project.entity.concretes.business.EducationTerm;
 import com.project.entity.concretes.business.Lesson;
+import com.project.entity.concretes.business.StudentInfo;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.Note;
 import com.project.entity.enums.RoleType;
+import com.project.payload.mappers.StudentInfoMapper;
+import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.StudentInfoRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.StudentInfoResponse;
@@ -12,6 +15,7 @@ import com.project.repository.business.StudentInfoRepsitory;
 import com.project.service.helper.MethodHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +28,7 @@ public class StudentInfoService
    private final MethodHelper methodHelper;
    private final LessonService lessonService;
    private final EducationTermServie educationTermServie;
+   private final StudentInfoMapper studentInfoMapper;
 
    @Value("${midterm.exam.percentage}")
    private Double midtermExamPercentage;
@@ -55,9 +60,27 @@ public class StudentInfoService
                                                       studentInfoRequest.getMidtermExam()));
 
       //Dto-Pojo
-      //TODO 01:09 DAY 9
+    StudentInfo studentInfo = studentInfoMapper.mapStudentInfoRequestToStudentInfo(
+              studentInfoRequest,
+              note,
+              calculateAverageExam(studentInfoRequest.getMidtermExam(),studentInfoRequest.getFinalExam()));
+
+     studentInfo.setStudent(student);
+     studentInfo.setTeacher(teacher);
+     studentInfo.setEducationTerm(educationTerm);
+     studentInfo.setLesson(lesson);
+
+      StudentInfo savedStudentInfo = studentInfoRepository.save(studentInfo);
+      return ResponseMessage.<StudentInfoResponse>builder()
+              .message(SuccessMessages.STUDENT_INFO_SAVE)
+              .object(studentInfoMapper.mapStudentInfoToStudentInfoResponse(savedStudentInfo))
+              .httpStatus(HttpStatus.CREATED)
+              .build();
+
+
+      //TODO 01:19 DAY 9
       //Pojo-Dto
-      return null;
+
    }
 
    private Double calculateAverageExam(Double midTerExam,
