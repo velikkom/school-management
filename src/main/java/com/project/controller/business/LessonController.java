@@ -1,15 +1,18 @@
 package com.project.controller.business;
 
+import com.project.entity.concretes.business.Lesson;
 import com.project.payload.request.business.LessonRequest;
 import com.project.payload.response.business.LessonResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.service.business.LessonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,12 +54,35 @@ public class LessonController {
 
 //todo homework lesson
     //deleteById admın
-    //http://8080:localhost/http://localhost:8080/lessons/
-
+    //http://localhost:8080/lessons/{id}
+    @PreAuthorize("hasAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseMessage<?> deleteLessonById(@PathVariable Long id)
+    {
+        return lessonService.deleteLessonById(id);
+    }
 
     //getAllWithPage
+    //http://localhost:8080/lessons/getAllWithPage
+    @PreAuthorize("hasRole('ROLE_ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @GetMapping("/getAllWithPage")
+    public Page<LessonResponse> getAllWithPage(
+            @RequestParam(value = "page",defaultValue ="0" ) int page,
+            @RequestParam(value = "size",defaultValue = "10") int size,
+            @RequestParam(value = "sort",defaultValue = "lessonName") String sort,
+@RequestParam(value = "direction",defaultValue = "Desc") String direction)
+    {
+        return lessonService.getAllWithPage(page,size,sort,direction);
+    }
+
 
     //getLessonsByIdList @requestParam
 
-
+    //http://localhost:8080/lessons/getLessonsByIdList?lessonId=1,2,3
+    @PreAuthorize("hasRole('ROLE_ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @GetMapping("/getLessonsByIdList")
+    public Set<Lesson> getLessonsByIdList(@RequestParam(name = "lessonId") Set<Long> lessonId)
+    {
+        return lessonService.getLessonsByIdSet(lessonId);
+    }
 }

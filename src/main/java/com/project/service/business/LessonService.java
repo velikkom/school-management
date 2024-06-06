@@ -1,7 +1,5 @@
 package com.project.service.business;
 
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.project.contactmessage.messages.Messages;
 import com.project.entity.concretes.business.Lesson;
 import com.project.exception.ConflictException;
 import com.project.exception.ResourceNotFoundException;
@@ -14,8 +12,13 @@ import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.business.LessonRepository;
 import com.project.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -85,6 +88,33 @@ public class LessonService {
     }
 
 
+    public ResponseMessage deleteLessonById(Long id)
+    {
+        isLessonExistsById(id);
+        lessonRepository.deleteById(id);
+
+        return ResponseMessage.builder()
+                .message(SuccessMessages.LESSON_DELETE)
+                .httpStatus(HttpStatus.OK)
+                .build();
+    }
+
+
+    public Page<LessonResponse> getAllWithPage(int page, int size, String sort, String direction)
+    {
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, direction);
+        return lessonRepository.findAll(pageable)
+                .map(lessonMapper::mapLessonToLessonResponse);
+    }
+
+
+    public Set<Lesson> getLessonsByIdSet(Set<Long> lessonId)
+    {
+        return lessonId.stream()
+                .map(this::isLessonExistsById)
+               // .map(lessonMapper::mapLessonToLessonResponse)
+                .collect(Collectors.toSet());
+    }
 }
 
 
