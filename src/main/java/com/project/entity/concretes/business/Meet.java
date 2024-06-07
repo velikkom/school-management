@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -28,10 +29,10 @@ public class Meet {
     private LocalDate date;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "US")
-    private LocalDate startTime;
+    private LocalTime startTime;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "US")
-    private LocalDate stopTime;
+    private LocalTime stopTime;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User advisoryTeacher;

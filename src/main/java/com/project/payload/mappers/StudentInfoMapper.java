@@ -61,14 +61,14 @@ public class StudentInfoMapper
                                                          Double average){
         return StudentInfo.builder()
                 .id(studentInfoRequestId)
-                .infoNote(studentInfoRequest.getInfoNote()) //
-                .midtermExam(studentInfoRequest.getMidtermExam()) //
-                .finalExam(studentInfoRequest.getFinalExam()) //
-                .absentee(studentInfoRequest.getAbsentee()) //
+                .infoNote(studentInfoRequest.getInfoNote())
+                .midtermExam(studentInfoRequest.getMidtermExam())
+                .finalExam(studentInfoRequest.getFinalExam())
+                .absentee(studentInfoRequest.getAbsentee())
                 .lesson(lesson)
                 .educationTerm(educationTerm)
-                .examAverage(average) //
-                .letterGrade(note) //
+                .examAverage(average)
+                .letterGrade(note)
                 .build();
     }
 

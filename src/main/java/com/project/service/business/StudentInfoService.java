@@ -6,15 +6,20 @@ import com.project.entity.concretes.business.StudentInfo;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.Note;
 import com.project.entity.enums.RoleType;
+import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.StudentInfoMapper;
+import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.StudentInfoRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.StudentInfoResponse;
 import com.project.repository.business.StudentInfoRepsitory;
 import com.project.service.helper.MethodHelper;
+import com.project.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +34,17 @@ public class StudentInfoService
    private final LessonService lessonService;
    private final EducationTermServie educationTermServie;
    private final StudentInfoMapper studentInfoMapper;
+   private final PageableHelper pageableHelper;
+
+
 
    @Value("${midterm.exam.percentage}")
    private Double midtermExamPercentage;
 
    @Value("${final.exam.percentage}")
    private Double finalExamPercentage;
+
+
 
 
    public ResponseMessage<StudentInfoResponse> saveStudentInfo(HttpServletRequest httpServletRequest,
@@ -108,4 +118,55 @@ public class StudentInfoService
          return Note.AA;
       }
    }
+   public  Page<StudentInfoResponse> getAllForTeacher(HttpServletRequest httpServletRequest, int page, int size)
+   {
+
+      Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
+
+      String username = (String) httpServletRequest.getAttribute("username");
+
+      return studentInfoRepository.findByTeacherId_UsernameEquals(username, pageable)
+              .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+   }
+
+   public Page<StudentInfoResponse> getAllForStudent(HttpServletRequest httpServletRequest, int page, int size)
+   {
+      Pageable pageable = pageableHelper.getPageableWithProperties(page, size);
+
+      String username = (String) httpServletRequest.getAttribute("username");
+
+      return studentInfoRepository.findByStudentId_UsernameEquals(username, pageable)
+              .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+   }
+
+   public ResponseMessage deleteStudentInfo(Long id)
+   {
+      StudentInfo studentInfo = isStudentInfoExistById(id);
+      studentInfoRepository.deleteById(studentInfo.getId());
+      return ResponseMessage.builder()
+              .message(SuccessMessages.STUDENT_INFO_DELETE)
+              .httpStatus(HttpStatus.OK)
+              .build();
+
+   }
+
+   private StudentInfo isStudentInfoExistById(Long id)
+   {
+      boolean isExist = studentInfoRepository.existsByIdEquals(id);
+
+      if (!isExist)
+      {
+         throw new ResourceNotFoundException(String.format(ErrorMessages.STUDENT_INFO_NOT_FOUND,id));
+      }else{
+         return studentInfoRepository.findById(id).get();
+      }
+
+
+   }
+
+
+
+
+
+
 }
