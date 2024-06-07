@@ -43,12 +43,22 @@ public class StudentInfoController {
     }
 
     //getAllWithPage()
-    //http
-
-
-
+    //http://localhost:8080/studentInfo
+    @PreAuthorize("hasAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER)")
+    @GetMapping("getAllStudentInfoByPage")
+    public Page<StudentInfoResponse> getAllStudentInfoByPage(
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "type") String  type
+    )
+    {
+        return studentInfoService.getAllStudentInfoByPAge(page,size,sort,type);
+    }
 
     //update()
+
+    //todo day 11 04:13
 
     //a teacher wants to get students ınfo who are his students
    // http://localhost:8080/studentInfo/getAllForTeacher

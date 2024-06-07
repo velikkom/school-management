@@ -165,8 +165,10 @@ public class StudentInfoService
    }
 
 
-
-
-
-
+   public Page<StudentInfoResponse> getAllStudentInfoByPAge(int page, int size, String sort, String  type)
+   {
+      Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+      return studentInfoRepository.findAll(pageable)
+              .map(studentInfoMapper::mapStudentInfoToStudentInfoResponse);
+   }
 }
