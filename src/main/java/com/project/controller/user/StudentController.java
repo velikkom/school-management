@@ -1,5 +1,6 @@
 package com.project.controller.user;
 
+import com.project.payload.request.business.ChooseLessonProgramWithId;
 import com.project.payload.request.user.StudentRequest;
 import com.project.payload.request.user.StudentRequestWithoutPassword;
 import com.project.payload.response.business.ResponseMessage;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
+   // private final ChooseLessonProgramWithId chooseLessonProgramWithId;
 
     //http://localhost:8080/student/save + json +post
     @PostMapping("/save")
@@ -61,6 +63,18 @@ public ResponseMessage<StudentResponse> updateStudentForManager
         return studentService.changeStatusOfStudent(id, status);
     }
 
+    //http://localhost:8080/student/addLessonProgramToStudent
+    @PreAuthorize("hasAnyAuthority('STUDENT')")
+    @PostMapping("/addLessonProgramToStudent")
+    public ResponseMessage<StudentResponse> addLessonProgram(HttpServletRequest httpServletRequest,
+                                                             @RequestBody @Valid
+                                                             ChooseLessonProgramWithId chooseLessonProgramWithId)
+    {
+        String  username =(String) httpServletRequest.getAttribute("username");
+        return studentService.addLessonProgramToStudent(username, chooseLessonProgramWithId);
 
-    // TODO : LESSON PROGRAM
+    }
+
+
+
 }

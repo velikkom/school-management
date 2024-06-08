@@ -1,13 +1,10 @@
 package com.project.payload.messages;
 
-import java.util.Locale;
-
 public class ErrorMessages {
-
-
 
     private ErrorMessages() {
     }
+
     public static final String NOT_PERMITTED_METHOD_MESSAGE = "You do not have any permission to do this operation";
     public static final String PASSWORD_NOT_MATCHED = "Your passwords are not matched" ;
     public static final String ALREADY_REGISTER_MESSAGE_USERNAME = "Error: User with username %s already registered" ;
@@ -36,7 +33,9 @@ public class ErrorMessages {
 
     public static final String TIME_NOT_VALID_MESSAGE = "Error: incorrect time";
 
-    public static final String LESSON_PROGRAM_NOT_FOUND_MESSAGE = "Error: Lesson with this field %s not found";
+    public static final String NOT_FOUND_LESSON_PROGRAM_MESSAGE = "Error: Lesson program with this field %s not found";
+    public static final String NOT_FOUND_LESSON_PROGRAM_MESSAGE_WITHOUT_ID_INFO="Error: lesson program with this field not found";
+    public static final String LESSON_PROGRAM_ALREADY_EXIST = "Error: Course schedule can not be selected for the same hour and date" ;
 
     public static final String MEET_NOT_FOUND_MESSAGE = "Error: Meet with id %s not found";
     public static final String MEET_HOURS_CONFLICT = "meet hours has conflict with existing meets";

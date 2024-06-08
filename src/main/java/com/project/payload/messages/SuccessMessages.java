@@ -5,7 +5,6 @@ public class SuccessMessages {
 
     private SuccessMessages() {
     }
-
     public static final String PASSWORD_CHANGED_RESPONSE_MESSAGE = "Password Successfully Changed" ;
 
     public static final String USER_CREATE = "User is Saved";
@@ -33,7 +32,9 @@ public class SuccessMessages {
     public static final String LESSON_DELETE = "Lesson is Deleted Successfully";
 
     public static final String LESSON_PROGRAM_SAVE = "Lesson Program is saved Successfully";
-    public static final String LESSON_PROGRAM_DELETE = "Lesson Program is deleted Successfully";
+    public static final String LESSON_PROGRAM_DELETE = "Lesson Program is Deleted Successfully";
+    public static final String LESSON_PROGRAM_ADD_TO_STUDENT = "Lesson Program added to student Successfully";
+    public static final String LESSON_PROGRAM_ADD_TO_TEACHER = "Lesson Program added to teacher Successfully";
 
     public static final String STUDENT_INFO_SAVE = "Student Info is Saved Successfully";
     public static final String STUDENT_INFO_UPDATE = "Student Info is Updated Successfully";
@@ -43,6 +44,7 @@ public class SuccessMessages {
     public static final String MEET_SAVE = "MEET is SAVED Successfully";
     public static final String MEET_UPDATE = "MEET is Updated Successfully";
     public static final String MEET_DELETE = "MEET is Deleted Successfully";
+
 
 
 
