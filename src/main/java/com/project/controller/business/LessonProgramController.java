@@ -3,7 +3,7 @@ package com.project.controller.business;
 import com.project.payload.request.business.LessonProgramRequest;
 import com.project.payload.response.business.LessonProgramResponse;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.service.business.LessonProgrammeService;
+import com.project.service.business.LessonProgramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,9 +17,9 @@ import java.util.Set;
 @RestController
 @RequestMapping("/lessonPrograms")
 @RequiredArgsConstructor
-public class LessonProgrammeController
+public class LessonProgramController
 {
-    private final LessonProgrammeService lessonProgrammeService;
+    private final LessonProgramService lessonProgrammeService;
 
 
     //save

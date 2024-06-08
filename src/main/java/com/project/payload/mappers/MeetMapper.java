@@ -42,4 +42,21 @@ public class MeetMapper {
                 .students(meet.getStudentList())
                 .build();
     }
+
+
+
+    /*public MeetResponse mapMeetToMeetResponse(Meet meet)
+    {
+        return MeetResponse.builder()
+                .id(meet.getId())
+                .date(meet.getDate())
+                .startTime(meet.getStartTime())
+                .stopTime(meet.getStopTime())
+                .description((meet.getDescription()))
+                .advisoryTeacherId(meet.getAdvisoryTeacher().getId())
+                .teacherSsn(meet.getAdvisoryTeacher().getSsn())
+                .teacherName(meet.getAdvisoryTeacher().getName())
+                .students(meet.getStudentList())
+                .build();
+    }*/
 }

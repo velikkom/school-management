@@ -3,7 +3,7 @@ package com.project.controller.business;
 import com.project.payload.request.business.EducationTermRequest;
 import com.project.payload.response.business.EducationTermResponse;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.service.business.EducationTermServie;
+import com.project.service.business.EducationTermService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/educationTerms")
 @RequiredArgsConstructor
 public class EducationTermController {
-    private final EducationTermServie educationTermServie;
+    private final EducationTermService educationTermServie;
 
     //** save
     //TODO SAVE

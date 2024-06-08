@@ -10,7 +10,7 @@ import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.LessonProgramRequest;
 import com.project.payload.response.business.LessonProgramResponse;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.repository.business.LessonProgrammeRepository;
+import com.project.repository.business.LessonProgramRepository;
 import com.project.service.helper.PageableHelper;
 import com.project.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
@@ -26,18 +26,18 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class LessonProgrammeService
+public class LessonProgramService
 {
-    private final LessonProgrammeRepository lessonProgramRepository;
+    private final LessonProgramRepository lessonProgramRepository;
     private final LessonService lessonService;
-    private final EducationTermServie educationTermService;
+    private final EducationTermService educationTermService;
     private final DateTimeValidator dateTimeValidator;
     private final LessonProgramMapper lessonProgramMapper;
     private final PageableHelper pageableHelper;
 
     public ResponseMessage<LessonProgramResponse> saveLessonProgram(LessonProgramRequest lessonProgramRequest) {
 
-        Set<Lesson> lessons = lessonService.getLessonsByIdSet(lessonProgramRequest.getLessonIdList());
+        Set<Lesson> lessons = lessonService.getLessonByLessonIdSet(lessonProgramRequest.getLessonIdList());
 
         EducationTerm educationTerm = educationTermService.findEducationTermById(lessonProgramRequest.getEducationTermId());
 
@@ -125,7 +125,7 @@ public class LessonProgrammeService
     {
         String username = (String) request.getAttribute("username");
 
-        return lessonProgramRepository.getLessonProgramByUsersUserName(username)
+        return lessonProgramRepository.getLessonProgramByUsersUsername(username)
                 .stream()
                 .map(lessonProgramMapper::mapLessonProgramToLessonProgramResponse)
                 .collect(Collectors.toSet());

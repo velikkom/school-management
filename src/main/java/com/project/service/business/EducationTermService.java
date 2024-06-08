@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EducationTermServie {
+public class EducationTermService {
     private final EducationTermRepository educationTermRepository;
     private final EducationTermMapper educationTermMapper;
     private final PageableHelper pageableHelper;

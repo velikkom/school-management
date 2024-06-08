@@ -25,29 +25,22 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
     private String ssn;
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends  GrantedAuthority> authorities;
 
-    //    public UserDetailsImpl(Long id, String username, String name, Boolean isAdvisor, String password, String ssn, Collection<? extends GrantedAuthority> authorities) {
-//        this.id = id;
-//        this.username = username;
-//        this.name = name;
-//        this.isAdvisor = isAdvisor;
-//        this.password = password;
-//        this.ssn = ssn;
-//        this.authorities = authorities;
-//    }
-    public UserDetailsImpl(Long id, String username, String name, Boolean isAdvisor, String password,
+    public UserDetailsImpl(Long id, String username, String name, Boolean isAdvisor, String  password,
                            String role, String ssn) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.isAdvisor = isAdvisor;
-        this.password = password;
+        this.password= password;
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(role));
-        this.authorities = grantedAuthorities;
-        this.ssn = ssn;
+        this.authorities=grantedAuthorities;
+        this.ssn=ssn;
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -84,16 +77,15 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o){
+        if(this == o){
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if( o==null || getClass()!= o.getClass()){
             return false;
         }
 
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.getId());
     }
-
 }

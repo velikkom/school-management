@@ -4,24 +4,21 @@ import com.project.entity.concretes.business.EducationTerm;
 import com.project.entity.concretes.business.Lesson;
 import com.project.entity.concretes.business.StudentInfo;
 import com.project.entity.enums.Note;
-import com.project.payload.request.UpdateStudentInfoRequest;
 import com.project.payload.request.business.StudentInfoRequest;
-
+import com.project.payload.request.business.UpdateStudentInfoRequest;
 import com.project.payload.response.business.StudentInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StudentInfoMapper
-{
+public class StudentInfoMapper {
+
     @Autowired
     private UserMapper studentMapper;
 
     public StudentInfo mapStudentInfoRequestToStudentInfo(StudentInfoRequest studentInfoRequest,
-                                                          Note note,
-                                                          Double average)
+                                                          Note note, Double average){
 
-    {
         return StudentInfo.builder()
                 .infoNote(studentInfoRequest.getInfoNote())
                 .absentee(studentInfoRequest.getAbsentee())
@@ -30,6 +27,7 @@ public class StudentInfoMapper
                 .examAverage(average)
                 .letterGrade(note)
                 .build();
+
     }
 
     public StudentInfoResponse mapStudentInfoToStudentInfoResponse(StudentInfo studentInfo){
@@ -61,17 +59,14 @@ public class StudentInfoMapper
                                                          Double average){
         return StudentInfo.builder()
                 .id(studentInfoRequestId)
-                .infoNote(studentInfoRequest.getInfoNote())
-                .midtermExam(studentInfoRequest.getMidtermExam())
-                .finalExam(studentInfoRequest.getFinalExam())
-                .absentee(studentInfoRequest.getAbsentee())
+                .infoNote(studentInfoRequest.getInfoNote()) //
+                .midtermExam(studentInfoRequest.getMidtermExam()) //
+                .finalExam(studentInfoRequest.getFinalExam()) //
+                .absentee(studentInfoRequest.getAbsentee()) //
                 .lesson(lesson)
                 .educationTerm(educationTerm)
-                .examAverage(average)
-                .letterGrade(note)
+                .examAverage(average) //
+                .letterGrade(note) //
                 .build();
     }
-
-
-
 }

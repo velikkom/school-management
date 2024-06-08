@@ -10,8 +10,8 @@ public interface LessonRepository extends JpaRepository<Lesson, Long>
 {
 
 
-    boolean existsByLessonByLessonNameEqualsIgnoreCase(String lessonName);
 
+    boolean existsLessonByLessonNameEqualsIgnoreCase(String lessonName);
 
     Optional<Lesson> getLessonByLessonName(String lessonName);
 

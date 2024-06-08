@@ -201,4 +201,7 @@ public class UserService
     {
         return userRepository.countAdmin(RoleType.ADMIN);
     }
+    public List<User>getStudentById(Long[]studentIds){
+        return userRepository.findByIdsEquals(studentIds);
+    }
 }
