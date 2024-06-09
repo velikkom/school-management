@@ -46,6 +46,8 @@ public class EducationTermController {
 
     //getAllWithPage
     //http://localhost:8080/educationTerms/getAllWithPage?page=0&size=2 +get
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER')")
+    @GetMapping("/getAllEducationTermsByPage")
     public Page<EducationTermResponse> getAllEducationTermsByPage(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,

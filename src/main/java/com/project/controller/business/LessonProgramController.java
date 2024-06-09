@@ -19,25 +19,24 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class LessonProgramController
 {
-    private final LessonProgramService lessonProgrammeService;
+    private final LessonProgramService lessonProgramService;
 
 
     //save
     //http://localhost:8080/lessonPrograms/save
-    @PostMapping("/save")
-    @PreAuthorize("hasRole('ROLE_ADMIN','MANAGER','ASSISTANT_MANAGER')")
+    @PostMapping("/save") // http://localhost:8080/lessonPrograms/save + POST + JSON
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public ResponseMessage<LessonProgramResponse> saveLessonProgram(@RequestBody @Valid
-                                                                        LessonProgramRequest lessonProgramRequest)
-    {
-        return lessonProgrammeService.saveLessonProgram(lessonProgramRequest);
+                                                                    LessonProgramRequest lessonProgramRequest){
+        return lessonProgramService.saveLessonProgram(lessonProgramRequest);
     }
 
     //http://localhost:8080/lessonPrograms/getAll
     @PostMapping("/getAll")
-    @PreAuthorize("hasRole('ROLE_ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
+    @PreAuthorize("hasRole('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
     public List<LessonProgramResponse> getAllLessonPrograms()
     {
-        return lessonProgrammeService.getAllLessonPrograms();
+        return lessonProgramService.getAllLessonPrograms();
     }
 
     //getById
@@ -46,15 +45,15 @@ public class LessonProgramController
     @PreAuthorize("hasRole('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public LessonProgramResponse getLessonProgramById(@PathVariable  Long id  )
     {
-        return lessonProgrammeService.getLessonProgramById(id);
+        return lessonProgramService.getLessonProgramById(id);
     }
 
     //getAllUnAssignedLessonPrograms
-    @PreAuthorize("hasRole('ROLE_ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
+    @PreAuthorize("hasRole('ADMIN','MANAGER','ASSISTANT_MANAGER','TEACHER','STUDENT')")
     @GetMapping("/getAllUnassignedLessonPrograms")
     public List<LessonProgramResponse> getAllUnAssigned ()
     {
-        return lessonProgrammeService.getAllUnAssigned();
+        return lessonProgramService.getAllUnAssigned();
     }
 
     //getAllAssignedLessonPrograms
@@ -62,7 +61,7 @@ public class LessonProgramController
     @GetMapping("/getAllAssignedLessonPrograms")
     public List<LessonProgramResponse> getAllAssigned ()
     {
-        return lessonProgrammeService.getAllAssigned();
+        return lessonProgramService.getAllAssigned();
     }
 
 
@@ -72,7 +71,7 @@ public class LessonProgramController
     @PreAuthorize("hasRole('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public ResponseMessage<LessonProgramResponse> deleteLessonProgram(@PathVariable Long id)
     {
-        return lessonProgrammeService.deleteLessonProgram(id);
+        return lessonProgramService.deleteLessonProgram(id);
     }
 
     //getAllWithPage
@@ -85,7 +84,7 @@ public class LessonProgramController
             @RequestParam(value = "sort", defaultValue = "startDate") String sort,
             @RequestParam(value = "direction", defaultValue = "Desc") String direction)
     {
-        return  lessonProgrammeService.getAllLessonProgramByPage(page,size,sort,direction);
+        return  lessonProgramService.getAllLessonProgramByPage(page,size,sort,direction);
     }
 
     //teacher getAllLessonPrograms
@@ -94,7 +93,7 @@ public class LessonProgramController
     @PreAuthorize("hasRole('TEACHER')")
     public Set<LessonProgramResponse> getAllLessonProgramsByTeacher(HttpServletRequest request)
     {
-        return lessonProgrammeService.getAllLessonProgramsByUser(request);
+        return lessonProgramService.getAllLessonProgramsByUser(request);
     }
 
     //student getAllLessonPrograms
@@ -103,7 +102,7 @@ public class LessonProgramController
     @PreAuthorize("hasRole('STUDENT')")
     public Set<LessonProgramResponse> getAllLessonProgramsByStudent(HttpServletRequest request)
     {
-        return lessonProgrammeService.getAllLessonProgramsByUser(request);
+        return lessonProgramService.getAllLessonProgramsByUser(request);
     }
 
 

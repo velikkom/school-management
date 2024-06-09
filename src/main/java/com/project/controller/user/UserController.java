@@ -37,8 +37,8 @@ public class UserController
 
     }
     // Not: getAllAdminOrDeanOrViceDeanByPage() *****************************************
-
-    @GetMapping("/getAllUserByPAge/{userRole}")
+    //http://localhost:8080/user/getAllUserByPage/Admin
+    @GetMapping("/getAllUserByPage/{userRole}") //
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Page<UserResponse>> getUserByPage(
             @PathVariable String userRole,
@@ -46,10 +46,9 @@ public class UserController
             @RequestParam(value = "size",defaultValue = "10") int size,
             @RequestParam(value = "sort",defaultValue = "name") String sort,
             @RequestParam(value = "type",defaultValue = "desc") String type
-    )
-    {
-       Page<UserResponse> adminsOrDeans = userService.getUserByPage(page,size,sort,type,userRole);
-       return new ResponseEntity<>(adminsOrDeans, HttpStatus.OK);
+    ){
+        Page<UserResponse> adminsOrDeans = userService.getUsersByPage(page,size,sort,type,userRole);
+        return new ResponseEntity<>(adminsOrDeans, HttpStatus.OK) ;
     }
 
     // Not :  getUserById() *********************************************************

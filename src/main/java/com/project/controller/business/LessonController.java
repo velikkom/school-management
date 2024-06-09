@@ -44,8 +44,8 @@ public class LessonController {
             @RequestParam(value = "type") String type){
         return lessonService.findLessonByPage(page,size,sort,type);
     }
-
-    @GetMapping("/getLessonByName") // http://localhost:8080/lessons/getLessonByName?lessonName=java
+    //http://localhost:8080/lessons/getLessonByName?lessonName=java
+    @GetMapping("/getLessonByName")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
     public ResponseMessage<LessonResponse> getLessonByLessonName(@RequestParam String lessonName){
         return lessonService.getLessonByLessonName(lessonName);

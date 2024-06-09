@@ -155,12 +155,12 @@ public class TeacherService
 
     public ResponseMessage<UserResponse> saveAdvisorTeacher(Long teacherId) {
 
-        // !!! Save de yazdigimiz ya varsa kontrolu
+        // !!! checking saved teacher or not
         User teacher = methodHelper.isUserExist(teacherId);
-        // !!! id ile gelen uer Teacher mi kontrolu
+        // !!! check id with role
         methodHelper.checkRole(teacher,RoleType.TEACHER);
 
-        // !!! id ile gelen teacher zaten advisor mi kontrolu ?
+        // !!! id is advisor teacher or not check ?
         if(Boolean.TRUE.equals(teacher.getIsAdvisor())) { // condition : teacher.getIsAdvisor()
             throw new ConflictException(
                     String.format(ErrorMessages.ALREADY_EXIST_ADVISOR_MESSAGE, teacherId));

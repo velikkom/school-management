@@ -80,11 +80,17 @@ public class UserService
                 build();
     }
 
-    public Page<UserResponse> getUserByPage(int page, int size, String sort, String type, String userRole)
+   /* public Page<UserResponse> getUsersByPage(int page, int size, String sort, String type, String userRole)
     {
         Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
         return userRepository.findByUserByRole(userRole,pageable)
                 .map(userMapper::mapUserToUserResponse);
+    }*/
+    public Page<UserResponse> getUsersByPage(int page, int size, String sort, String type,
+                                             String userRole) {
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return userRepository.findByUserByRole(userRole, pageable)
+                .map(userMapper::mapUserToUserResponse) ;
     }
 
 

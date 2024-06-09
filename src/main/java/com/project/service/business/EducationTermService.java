@@ -92,7 +92,7 @@ public class EducationTermService {
     }
 
     private EducationTerm isEducationTermExist(Long id) {
-        return educationTermRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format(ErrorMessages.EDUCATION_TERM_NOT_FOUND_MESSAGE)));
+        return educationTermRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format(ErrorMessages.EDUCATION_TERM_NOT_FOUND_MESSAGE,id)));
     }
 
     public List<EducationTermResponse> getAllEducationTerms() {

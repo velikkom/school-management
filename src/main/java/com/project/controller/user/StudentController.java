@@ -24,8 +24,9 @@ public class StudentController {
 
     //http://localhost:8080/student/save + json +post
     @PostMapping("/save")
-    @PreAuthorize("haAnyAuthority('ADMIN')")
-    public ResponseEntity<ResponseMessage<StudentResponse>> saveStudent(@RequestBody @Valid StudentRequest studentRequest) {
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<ResponseMessage<StudentResponse>> saveStudent(@RequestBody @Valid
+                                                                            StudentRequest studentRequest) {
         return ResponseEntity.ok(studentService.saveStudent(studentRequest));
     }
 
